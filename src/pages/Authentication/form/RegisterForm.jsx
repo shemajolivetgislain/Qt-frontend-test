@@ -5,6 +5,8 @@ import { useState, useEffect } from "react";
 import Input from "../../../components/Inputs";
 import Button from "../../../components/Button";
 import { useNavigate } from "react-router-dom";
+import ButtonLoader from "../../../components/Loaders/Loaders";
+import { useAddUserMutation } from "../../../app/api";
 
 export default function RegisterForm() {
   const [showPassword, setShowPassword] = useState(false);
@@ -15,9 +17,37 @@ export default function RegisterForm() {
     formState: { errors },
   } = useForm();
 
+  const [addUser, { isLoading, isSuccess, isError, error }] =
+    useAddUserMutation();
+
   const onSubmit = (data) => {
-    console.log(data);
+    addUser(data);
   };
+  useEffect(() => {
+    if (!isLoading && isSuccess) {
+      toast.success("Account registered successfully!", {
+        autoClose: 2000,
+        hideProgressBar: true,
+        position: "top-center",
+      });
+      navigate("/login");
+    }
+    if (isError) {
+      console.log(error?.data);
+      toast.error(error?.data?.error, {
+        autoClose: 2000,
+        hideProgressBar: true,
+        position: "top-center",
+      });
+    }
+  }, [
+    error?.data,
+    error?.data.message,
+    isError,
+    isLoading,
+    isSuccess,
+    navigate,
+  ]);
   return (
     <div className="w-1/2 max-md:w-[80%]  h-fit  flex flex-col  py-20 px-20 gap-5 shadow-sm border-2 border-slate-100 rounded-md ">
       <header>
@@ -121,42 +151,57 @@ export default function RegisterForm() {
           name="password"
           control={control}
           defaultValue=""
-          rules={{ required: "Password is required" }}
-          render={({ field }) => {
-            return (
-              <div className="flex flex-col gap-1">
-                <label className="text-whiteTheme-textColor font-semibold text-base">
-                  Password
-                </label>
-                <div className="relative">
-                  <Input
-                    type={showPassword ? "text" : "password"}
-                    placeholder="Enter your password"
-                    {...field}
-                    className={`!border-2 !border-slate-300 !pl-4`}
-                  />
-                  <div
-                    className="absolute inset-y-0 right-0 pr-3 flex items-center cursor-pointer"
-                    onClick={() => setShowPassword(!showPassword)}
-                  >
-                    {showPassword ? (
-                      <LuEye size={18} className="" />
-                    ) : (
-                      <LuEyeOff size={18} className="" />
-                    )}
-                  </div>
-                </div>
-                {errors.password && (
-                  <p className="text-red-600 text-[13px]">
-                    {errors.password.message}
-                  </p>
-                )}
-              </div>
-            );
+          rules={{
+            required: "Password is required",
+            minLength: {
+              value: 8,
+              message: "Password must be at least 8 characters",
+            },
+            validate: (value) => {
+              const hasUppercase = /[A-Z]/.test(value);
+              if (!hasUppercase) {
+                return "Password must include at least one uppercase letter";
+              }
+              return true;
+            },
           }}
+          render={({ field }) => (
+            <div className="flex flex-col gap-1">
+              <label className="text-whiteTheme-textColor font-semibold text-base">
+                Password
+              </label>
+              <div className="relative">
+                <Input
+                  type={showPassword ? "text" : "password"}
+                  placeholder="Enter your password"
+                  {...field}
+                  className={`!border-2 !border-slate-300 !pl-4`}
+                />
+                <div
+                  className="absolute inset-y-0 right-0 pr-3 flex items-center cursor-pointer"
+                  onClick={() => setShowPassword(!showPassword)}
+                >
+                  {showPassword ? (
+                    <LuEye size={18} className="" />
+                  ) : (
+                    <LuEyeOff size={18} className="" />
+                  )}
+                </div>
+              </div>
+              {errors.password && (
+                <p className="text-red-600 text-[13px]">
+                  {errors.password.message}
+                </p>
+              )}
+            </div>
+          )}
         />
         <Button
-          value={<span className="flex items-center">{"Sign In"}</span>}
+          value={
+            <span className="flex items-center">
+              {isLoading ? <ButtonLoader /> : "Sign Up"}
+            </span>
+          }
           className={"!w-full"}
         />
         <span className="flex items-center gap-2">
@@ -167,7 +212,7 @@ export default function RegisterForm() {
               navigate("/register");
             }}
           >
-            login
+            Login
           </p>
         </span>
       </form>

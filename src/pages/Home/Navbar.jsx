@@ -5,11 +5,14 @@ import { navLinks } from "../../constants/navLinks";
 import { navImage } from "../../constants/images";
 import { MdClose } from "react-icons/md";
 import MobileMenu from "./child/MobileMenu";
+import { useNavigate } from "react-router-dom";
 
 const Navbar = () => {
   const [onScroll, setOnScroll] = useState(false);
   const [openMenu, setOpenMenu] = useState(false);
-  const [openLogin, setOpenLogin] = useState(false);
+  const navigate = useNavigate();
+  const loginUser = localStorage.getItem("token");
+  const userDetails = JSON.parse(localStorage.getItem("user"));
 
   const changeColor = () =>
     window.scrollY >= 10 ? setOnScroll(true) : setOnScroll(false);
@@ -24,7 +27,14 @@ const Navbar = () => {
         }`}
       >
         <header>
-          <img src={navImage.logo} alt="logo" className="w-[250px] h-[62px]" />
+          <img
+            src={navImage.logo}
+            alt="logo"
+            className="w-[250px] h-[62px]"
+            onClick={() => {
+              navigate("/");
+            }}
+          />
         </header>
 
         <ul className="flex gap-8 text-whiteTheme-primaryColor dark:text-darkTheme-textColor max-md:hidden">
@@ -63,10 +73,32 @@ const Navbar = () => {
               />
             )}
           </div>
-          <Button
-            value={<a href="/login">Login</a>}
-            className={"max-md:hidden"}
-          />
+          {loginUser ? (
+            <div className=" flex gap-2 items-center bg-blue-100 py-3 px-5 rounded-full">
+              <span className=" rounded-full p-4  w-10 h-10 bg-blue-400 flex items-center font-bold">
+                <p>N</p>
+              </span>
+              <span>
+                <p className="text-sm font-semibold text-whiteTheme capitalize">
+                  {userDetails?.firstname} {userDetails?.lastname}
+                </p>
+                <p
+                  className="text-sm underline cursor-pointer"
+                  onClick={() => {
+                    localStorage.clear();
+                    navigate("/");
+                  }}
+                >
+                  Logout
+                </p>
+              </span>
+            </div>
+          ) : (
+            <Button
+              value={<a href="/login">Login</a>}
+              className={"max-md:hidden"}
+            />
+          )}
         </div>
       </nav>
       {openMenu && <MobileMenu />}

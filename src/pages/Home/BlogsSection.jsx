@@ -11,6 +11,7 @@ const BlogsSection = () => {
   const navigate = useNavigate();
   const [listAllBlogs, { isLoading, isSuccess, data: blogsData }] =
     useLazyListAllBlogsQuery();
+  const loginUser = localStorage.getItem("token");
 
   const contentRefs = useRef([]); // Create a ref to store the content elements
 
@@ -34,7 +35,11 @@ const BlogsSection = () => {
         <h1 className="text-whiteTheme-primaryColor text-xl w-1/2 font-bold">
           Discover Inspiring Stories: A Curated Collection of Engaging Blogs
         </h1>
-        <Button value={"Join us"} />
+        {loginUser ? (
+          <Button value={"Add New Blog"} />
+        ) : (
+          <Button value={"Join us"} />
+        )}
       </header>
       <main className="grid grid-cols-3 gap-5 max-md:grid-cols-1">
         {isLoading ? (

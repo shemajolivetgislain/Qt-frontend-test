@@ -5,6 +5,8 @@ import { useState, useEffect } from "react";
 import Input from "../../../components/Inputs";
 import Button from "../../../components/Button";
 import { useNavigate } from "react-router-dom";
+import { useLoginMutation } from "../../../app/api";
+import ButtonLoader from "../../../components/Loaders/Loaders";
 
 const LoginForm = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -14,10 +16,54 @@ const LoginForm = () => {
     handleSubmit,
     formState: { errors },
   } = useForm();
+  const [
+    login,
+    {
+      isLoading,
+      isSuccess,
+      isError: loginIsError,
+      error: loginError,
+      data: loginData,
+    },
+  ] = useLoginMutation();
 
   const onSubmit = (data) => {
-    console.log(data);
+    login({
+      email: data?.email,
+      password: data?.password,
+    });
   };
+
+  useEffect(() => {
+    if (!isLoading && isSuccess) {
+      toast.success("Login successful!", {
+        autoClose: 2000,
+        hideProgressBar: true,
+        position: "top-center",
+      });
+      localStorage.setItem("token", loginData?.access_token);
+      localStorage.setItem("user", JSON.stringify(loginData?.user));
+      navigate("/");
+    } else if (loginIsError) {
+      if (loginError) {
+        toast.error("Authentication failed. Please try again later.", {
+          autoClose: 2000,
+          hideProgressBar: true,
+          position: "top-center",
+        });
+      } else {
+        toast.error(loginError?.data?.message);
+      }
+    }
+  }, [
+    isLoading,
+    isSuccess,
+    loginData?.access_token,
+    loginData?.user,
+    loginError,
+    loginIsError,
+    navigate,
+  ]);
   return (
     <div className="w-1/2 max-md:w-[80%]  h-fit  flex flex-col  py-20 px-20 gap-5 shadow-sm border-2 border-slate-100 rounded-md ">
       <header>
@@ -100,7 +146,11 @@ const LoginForm = () => {
           }}
         />
         <Button
-          value={<span className="flex items-center">{"Sign In"}</span>}
+          value={
+            <span className="flex items-center">
+              {isLoading ? <ButtonLoader /> : "Sign In"}
+            </span>
+          }
           className={"!w-full"}
         />
         <span className="flex items-center gap-2">

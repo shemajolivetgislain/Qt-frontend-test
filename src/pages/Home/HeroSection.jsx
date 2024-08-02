@@ -42,7 +42,7 @@ const HeroSection = () => {
           </p>
         </motion.article>
         <Button
-          value={"Login Now"}
+          value={"Sign up Now"}
           className={
             "!bg-white !text-whiteTheme-primaryColor !py-4 !px-9 !font-bold hover:!bg-whiteTheme-primaryColor hover:!text-white"
           }
