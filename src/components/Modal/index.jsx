@@ -4,14 +4,14 @@ import { IoClose } from "react-icons/io5";
 function Modal({ toggleFunction, children, className }) {
   return (
     <main
-      className={`fixed inset-0 flex items-center justify-center z-[10] flex-col overflow-hidden`}
+      className={`fixed inset-0 flex items-center justify-center z-[100000] flex-col overflow-hidden`}
     >
       <div
         className="absolute inset-0 bg-gray-600 opacity-60 "
         onClick={toggleFunction}
       ></div>
       <div
-        className={`bg-slate-100 border px-6 py-3 z-50 w-[40%] rounded-md ${className} relative `}
+        className={`bg-slate-100 border px-6 py-3 z-50 w-[40%] max-md:w-[90%] rounded-md ${className} relative `}
       >
         <button
           className="p-1 absolute -right-5 -top-5"

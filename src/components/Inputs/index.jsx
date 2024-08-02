@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 
 const Input = forwardRef(
   (
-    { type = null, className = "", placeholder, onChange, required = false },
+    { type = null, className = "", placeholder, onChange, required = false , defaultValue},
     ref
   ) => {
     return (
@@ -13,6 +13,7 @@ const Input = forwardRef(
           type={type || "text"}
           required={required}
           placeholder={placeholder}
+          defaultValue={defaultValue}
           onChange={onChange}
           className={`${className} border-[1px] border-whiteTheme-primaryColor rounded-md p-3 w-full focus:outline-none focus:border-2 focus:border-whiteTheme-primaryColor transition:all duration-100 ease-out-in dark:bg-darkTheme-borderColor`}
         />

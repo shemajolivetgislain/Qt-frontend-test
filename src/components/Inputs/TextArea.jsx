@@ -5,7 +5,7 @@ const TextArea = forwardRef(
   (
     {
       cols = 50,
-      rows = 5,
+      rows = 3,
       className,
       defaultValue = null,
       resize = false,

@@ -6,7 +6,7 @@ export const apiSlice = createApi({
   baseQuery: fetchBaseQuery({
     baseUrl: LOCAL_API_URL,
     prepareHeaders: (headers) => {
-      const token = sessionStorage.getItem("token");
+      const token = localStorage.getItem("token");
       if (token) {
         headers.set("authorization", `Bearer ${token}`);
       }
@@ -82,7 +82,7 @@ export const apiSlice = createApi({
       }),
       addBlogComment: builder.mutation({
         query: ({ id, data }) => ({
-          url: `/comments/posts/${id}/comment`,
+          url: `/comments/post/${id}/comment`,
           method: "POST",
           body: data,
         }),

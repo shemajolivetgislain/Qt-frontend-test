@@ -76,7 +76,7 @@ const Navbar = () => {
           {loginUser ? (
             <div className=" flex gap-2 items-center bg-blue-100 py-3 px-5 rounded-full">
               <span className=" rounded-full p-4  w-10 h-10 bg-blue-400 flex items-center font-bold">
-                <p>N</p>
+                <p>{userDetails?.firstname?.charAt(0).toUpperCase()}</p>
               </span>
               <span>
                 <p className="text-sm font-semibold text-whiteTheme capitalize">
@@ -86,7 +86,7 @@ const Navbar = () => {
                   className="text-sm underline cursor-pointer"
                   onClick={() => {
                     localStorage.clear();
-                    navigate("/");
+                    navigate("/login");
                   }}
                 >
                   Logout

@@ -3,12 +3,14 @@ import Typewriter from "typewriter-effect";
 import { useInView } from "react-intersection-observer";
 import { motion } from "framer-motion";
 import Button from "../../components/Button";
+import { useNavigate } from "react-router-dom";
 
 const HeroSection = () => {
   const [ref, inView] = useInView({
     triggerOnce: true,
     threshold: 0.1,
   });
+  const navigate = useNavigate();
   return (
     <section
       id="hero"
@@ -46,6 +48,9 @@ const HeroSection = () => {
           className={
             "!bg-white !text-whiteTheme-primaryColor !py-4 !px-9 !font-bold hover:!bg-whiteTheme-primaryColor hover:!text-white"
           }
+          onClick={() => {
+            navigate("/register");
+          }}
         />
       </ContainerHolder>
     </section>

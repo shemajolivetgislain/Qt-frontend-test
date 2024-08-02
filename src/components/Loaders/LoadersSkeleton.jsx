@@ -1,4 +1,4 @@
-const TableSkeletonLoader = () => {
+const LoadersSkeleton = () => {
   return (
     <div className="animate-pulse">
       <div className="h-6 bg-gray-200 mt-3 mb-3 rounded"></div>
@@ -13,4 +13,4 @@ const TableSkeletonLoader = () => {
   );
 };
 
-export default TableSkeletonLoader;
+export default LoadersSkeleton;

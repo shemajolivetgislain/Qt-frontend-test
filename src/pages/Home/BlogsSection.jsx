@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useLazyListAllBlogsQuery } from "../../app/api";
 import Button from "../../components/Button";
 import ContainerHolder from "../../components/container";
@@ -6,24 +6,36 @@ import { motion } from "framer-motion";
 import clamp from "clamp-js";
 import { FaUserTie } from "react-icons/fa6";
 import { useNavigate } from "react-router-dom";
+import AddBlog from "./blog/AddBlog";
+import DeleteBlog from "./blog/DeleteBlog";
+import EditBlog from "./blog/EditBlog";
+import { IMAGE_URL } from "../../constants/Environments";
+import moment from "moment";
 
 const BlogsSection = () => {
   const navigate = useNavigate();
+  const [openModal, setOpenModal] = useState(false);
+  const [blogId, setBlogId] = useState(null);
+  const [blogData, setBlogData] = useState(null);
+  const [openDeleteModal, setOpenDeleteModal] = useState(false);
+  const [openEditModal, setOpenEditModal] = useState(false);
   const [listAllBlogs, { isLoading, isSuccess, data: blogsData }] =
     useLazyListAllBlogsQuery();
   const loginUser = localStorage.getItem("token");
+  const userDetails = JSON.parse(localStorage.getItem("user"));
 
-  const contentRefs = useRef([]); // Create a ref to store the content elements
+  const contentRefs = useRef([]);
 
   useEffect(() => {
     listAllBlogs();
   }, [listAllBlogs]);
 
+  // Apply clamping with 2 lines limit
   useEffect(() => {
     if (blogsData?.data) {
       contentRefs.current.forEach((content) => {
         if (content) {
-          clamp(content, { clamp: 2 }); // Apply clamping with 2 lines limit
+          clamp(content, { clamp: 2 });
         }
       });
     }
@@ -36,9 +48,19 @@ const BlogsSection = () => {
           Discover Inspiring Stories: A Curated Collection of Engaging Blogs
         </h1>
         {loginUser ? (
-          <Button value={"Add New Blog"} />
+          <Button
+            value={"Add New Blog"}
+            onClick={() => {
+              setOpenModal(true);
+            }}
+          />
         ) : (
-          <Button value={"Join us"} />
+          <Button
+            value={"Join us"}
+            onClick={() => {
+              navigate("/register");
+            }}
+          />
         )}
       </header>
       <main className="grid grid-cols-3 gap-5 max-md:grid-cols-1">
@@ -57,7 +79,9 @@ const BlogsSection = () => {
                 <motion.div className="w-full flex items-center rounded-md">
                   <img
                     src={
-                      "https://www.forbesindia.com/fbimages/900x600/proportional/jpeg/blog/wp-content/uploads/2024/06/shutterstock_2293372839_BG.jpg"
+                      blog?.image
+                        ? `${IMAGE_URL}${blog.image}`
+                        : "https://www.forbesindia.com/fbimages/900x600/proportional/jpeg/blog/wp-content/uploads/2024/06/shutterstock_2293372839_BG.jpg"
                     }
                     alt="blog-image"
                     className="w-60 h-60 rounded-t-md"
@@ -84,10 +108,13 @@ const BlogsSection = () => {
                     <FaUserTie size={25} />
                   </span>
                   <span className=" ">
-                    <p className="font-bold text-base text-whiteTheme-primaryColor">
-                      Shema Jolive
+                    <p className="font-bold text-base text-whiteTheme-primaryColor capitalize">
+                      {blog?.author?.first_name}
+                      {""} {blog?.author?.last_name}
                     </p>
-                    <p className="text-xs text-gray-500">2 hours ago</p>
+                    <p className="text-xs text-gray-500">
+                      {moment(blog?.created_at).format("LLL")}
+                    </p>
                   </span>
                 </div>
                 {/* Action */}
@@ -95,11 +122,37 @@ const BlogsSection = () => {
                   <span
                     className="text-blue-700 underline font-semibold cursor-pointer"
                     onClick={() => {
-                      navigate(`/blog/${blog.id}`);
+                      navigate(`/blog/${blog?.id}`);
                     }}
                   >
                     Read more
                   </span>
+
+                  {loginUser && userDetails?.id === blog?.author.id && (
+                    <>
+                      {" "}
+                      <span className="mx-3">|</span>
+                      <span
+                        className="text-red-500 font-semibold cursor-pointer"
+                        onClick={() => {
+                          setOpenDeleteModal(true);
+                          setBlogId(blog?.id);
+                        }}
+                      >
+                        Delete
+                      </span>
+                      <span className="mx-3">|</span>
+                      <span
+                        className="text-green-500 font-semibold cursor-pointer"
+                        onClick={() => {
+                          setBlogData(blog);
+                          setOpenEditModal(true);
+                        }}
+                      >
+                        Update
+                      </span>
+                    </>
+                  )}
                 </div>
               </motion.div>
             ))
@@ -114,6 +167,16 @@ const BlogsSection = () => {
           </span>
         )}
       </main>
+      {openModal && <AddBlog closeModal={() => setOpenModal(false)} />}
+      {openDeleteModal && (
+        <DeleteBlog
+          blog_id={blogId}
+          closeModal={() => setOpenDeleteModal(false)}
+        />
+      )}
+      {openEditModal && (
+        <EditBlog data={blogData} closeModal={() => setOpenEditModal(false)} />
+      )}
     </ContainerHolder>
   );
 };
