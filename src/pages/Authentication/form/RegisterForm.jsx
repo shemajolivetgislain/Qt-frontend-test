@@ -33,7 +33,6 @@ export default function RegisterForm() {
       navigate("/login");
     }
     if (isError) {
-      console.log(error?.data);
       toast.error(error?.data?.error, {
         autoClose: 2000,
         hideProgressBar: true,
@@ -49,7 +48,7 @@ export default function RegisterForm() {
     navigate,
   ]);
   return (
-    <div className="w-1/2 max-md:w-[80%]  h-fit  flex flex-col  py-20 px-20 gap-5 shadow-sm border-2 border-slate-100 rounded-md ">
+    <div className="w-1/2 max-md:w-[80%]  h-fit  flex flex-col  py-20 px-20 max-md:px-7 gap-5 shadow-sm border-2 border-slate-100 rounded-md">
       <header>
         <h1 className="font-bold text-whiteTheme-primaryColor text-2xl">
           Register
@@ -207,9 +206,9 @@ export default function RegisterForm() {
         <span className="flex items-center gap-2">
           <p className="text-gray-600">Already have an account! </p>
           <p
-            className="text-whiteTheme-primaryColor font-bold"
+            className="text-whiteTheme-primaryColor font-bold cursor-pointer"
             onClick={() => {
-              navigate("/register");
+              navigate("/login");
             }}
           >
             Login
