@@ -57,6 +57,7 @@ To run this project locally, you'll need to have Node.js and npm installed on yo
   ```
 
   Add to .env file backend url VITE_APP_LOCAL_API_URL = 'http://127.0.0.1:8000/api'.
+  Add to .env file image access url VITE_APP_LOCAL_API_IMAGE_URL = 'http://127.0.0.1:8000'
 
 ### License
 
