@@ -14,10 +14,10 @@ const HeroSection = () => {
   return (
     <section
       id="hero"
-      className="w-full !mt-20 h-[85vh] max-md:py-20 flex flex-col justify-center items-center max-lg:h-full max-xl:h-full max-md:h-full "
+      className="w-full !mt-20 h-[85vh] max-md:py-20 flex flex-col justify-center items-center max-md:items-start max-lg:h-full max-xl:h-full max-md:h-full "
     >
       <ContainerHolder
-        className={`flex flex-col gap-10 text-white max-md:flex-col  justify-between items-start max-md:items-center`}
+        className={`flex flex-col gap-10 text-white max-md:flex-col max-md:items-start  justify-between items-start `}
       >
         <motion.article
           ref={ref}

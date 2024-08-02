@@ -43,8 +43,8 @@ const BlogsSection = () => {
 
   return (
     <ContainerHolder className={"!py-12 flex flex-col gap-10"}>
-      <header className="flex justify-between">
-        <h1 className="text-whiteTheme-primaryColor text-xl w-1/2 font-bold">
+      <header className="flex max-md:flex-col justify-between">
+        <h1 className="text-whiteTheme-primaryColor text-xl w-1/2 max-md:w-full font-bold">
           Discover Inspiring Stories: A Curated Collection of Engaging Blogs
         </h1>
         {loginUser ? (

@@ -12,7 +12,7 @@ import { toast } from "react-toastify";
 const AddComment = ({ post_id }) => {
   const { control, handleSubmit } = useForm();
 
-  const [addBlogComment, { isLoading, isSuccess, isError }] =
+  const [addBlogComment, { isLoading, isSuccess, isError, error }] =
     useAddBlogCommentMutation();
   const [blogDetails] = useLazyBlogDetailsQuery();
   const onSubmit = (data) => {
@@ -29,15 +29,23 @@ const AddComment = ({ post_id }) => {
       });
       blogDetails(post_id);
     } else if (isError) {
-      toast.error("Error Occured while adding comment", {
-        autoClose: 2000,
-        hideProgressBar: true,
-        position: "top-center",
-      });
+      if (error.status === 401) {
+        toast.error("You need to login to add comments", {
+          autoClose: 2000,
+          hideProgressBar: true,
+          position: "top-center",
+        });
+      } else {
+        toast.error("Error Occured while adding comment", {
+          autoClose: 2000,
+          hideProgressBar: true,
+          position: "top-center",
+        });
+      }
     }
-  }, [blogDetails, control, isError, isLoading, isSuccess, post_id]);
+  }, [blogDetails, control, error, isError, isLoading, isSuccess, post_id]);
   return (
-    <div className="w-1/2 flex flex-col gap-3">
+    <div className="w-1/2 max-md:w-full flex flex-col gap-3">
       <header>
         <h1 className="font-bold text-whiteTheme-primaryColor text-lg">
           Leave comment

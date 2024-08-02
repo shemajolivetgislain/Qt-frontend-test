@@ -75,11 +75,11 @@ const Navbar = () => {
           </div>
           {loginUser ? (
             <div className=" flex gap-2 items-center bg-blue-100 py-3 px-5 rounded-full">
-              <span className=" rounded-full p-4  w-10 h-10 bg-blue-400 flex items-center font-bold">
+              <span className=" rounded-full p-4  w-10 h-10 bg-blue-400 flex items-center font-bold max-sm:hidden">
                 <p>{userDetails?.firstname?.charAt(0).toUpperCase()}</p>
               </span>
               <span>
-                <p className="text-sm font-semibold text-whiteTheme capitalize">
+                <p className="text-sm font-semibold text-whiteTheme capitalize max-sm:hidden">
                   {userDetails?.firstname} {userDetails?.lastname}
                 </p>
                 <p
