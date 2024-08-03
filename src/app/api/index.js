@@ -45,7 +45,7 @@ export const apiSlice = createApi({
       }),
       blogDetails: builder.query({
         query: (id) => ({
-          url: `/blogs/${id}`,
+          url: `/blogs/${id}/detail`,
           method: "GET",
         }),
       }),
@@ -104,3 +104,17 @@ export const apiSlice = createApi({
     };
   },
 });
+
+
+export const {
+  useLoginMutation,
+  useAddUserMutation,
+  useLazyListAllBlogsQuery,
+  useLazyBlogDetailsQuery,
+  useAddBlogMutation,
+  useUpdateBlogMutation,
+  useDeleteBlogMutation,
+  useLazyListBlogCommentsQuery,
+  useAddBlogCommentMutation,
+  useUpdateBlogCommentMutation,
+} = apiSlice

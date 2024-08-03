@@ -29,3 +29,12 @@ body {
   filter: brightness(40%) contrast(120%); /* Apply brightness and contrast filters */
   z-index: -1; /* Ensure the pseudo-element is behind the content */
 }
+
+
+.blog-content {
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  height: 3rem; /* Adjust based on your font size and line height */
+}
