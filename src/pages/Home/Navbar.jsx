@@ -9,6 +9,7 @@ import MobileMenu from "./child/MobileMenu";
 const Navbar = () => {
   const [onScroll, setOnScroll] = useState(false);
   const [openMenu, setOpenMenu] = useState(false);
+  const [openLogin, setOpenLogin] = useState(false);
 
   const changeColor = () =>
     window.scrollY >= 10 ? setOnScroll(true) : setOnScroll(false);
@@ -63,7 +64,7 @@ const Navbar = () => {
             )}
           </div>
           <Button
-            value={<a href="#contact">Login</a>}
+            value={<a href="/login">Login</a>}
             className={"max-md:hidden"}
           />
         </div>
