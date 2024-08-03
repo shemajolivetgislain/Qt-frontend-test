@@ -7,3 +7,25 @@
 body {
   font-family: "Montserrat", sans-serif;
 }
+
+
+#hero {
+  position: relative; /* Ensure the container is positioned relatively */
+  background: none; /* Remove any background to avoid redundancy */
+}
+
+#hero::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url("/src/assets/bacg4.jpg");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+  /* Set the opacity of the background image */
+  filter: brightness(40%) contrast(120%); /* Apply brightness and contrast filters */
+  z-index: -1; /* Ensure the pseudo-element is behind the content */
+}
