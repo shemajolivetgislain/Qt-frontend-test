@@ -1,1 +1,1 @@
-# Qt-frontend-test
+Blog App readme
